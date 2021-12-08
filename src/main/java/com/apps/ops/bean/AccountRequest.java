@@ -1,8 +1,4 @@
 package com.apps.ops.bean;
-
-import java.math.BigDecimal;
-
-import org.springframework.stereotype.Component;
 //@Component
 public class AccountRequest {
 	

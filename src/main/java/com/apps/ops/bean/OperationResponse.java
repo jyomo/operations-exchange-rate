@@ -1,7 +1,5 @@
 package com.apps.ops.bean;
 
-import org.springframework.stereotype.Component;
-
 //@Component
 public class OperationResponse {
 	private String monedaOrigen;

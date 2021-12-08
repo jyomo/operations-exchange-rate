@@ -5,8 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.apps.ops.util.Constants;
-
 @Entity
 public class CoreExchange {
 	@Id

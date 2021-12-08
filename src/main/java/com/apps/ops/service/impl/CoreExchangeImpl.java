@@ -39,10 +39,6 @@ public class CoreExchangeImpl implements CoreExchangeService {
 			logger.info(String.format("sourceAccount [%s] | targetAccount [%s] | movementChange [%s] " ,
 					sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency()));
 			
-
-			// logger.info(String.format("sourceAccount [%s] | targetAccount [%s] |  movementChange [%s]"
-				//	,sourceAccount.getCurrency(),targetAccount.getCurrency()),movementChange.getCurrency());
-
 			if (!sourceAccount.getCurrency().equals(targetAccount.getCurrency())) {
 				
 				

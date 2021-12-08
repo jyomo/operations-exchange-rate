@@ -26,6 +26,8 @@ public class AccountServiceImpl implements AccountService {
 	public List<Account> list() {
 		logger.info("listando data...");
 		List<Account> data = accountRepository.findAll();
+		String format = String.format("Ctd Registros obtenidos: %s", data.size());
+		logger.info(format);
 		return data;
 	}
 
