@@ -47,8 +47,7 @@ public class AccountController {
 
 	@GetMapping("/accounts/{id}")
 	public ResponseJson getById(@PathVariable Integer id) {
-		String format = String.format("---/accounts/{%s}---", id);
-		logger.info(format);
+		logger.info("---/accounts/{}---", id);
 		return new ResponseJson(Constants.HTTP_OK_STATUS, accountService.findById(id));
 
 	}

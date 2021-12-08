@@ -36,8 +36,8 @@ public class CoreExchangeImpl implements CoreExchangeService {
 			sourceAccount = sourceAccountOptional.get();
 			targetAccount = targetAccountOptional.get();
 	
-			logger.info(String.format("sourceAccount [%s] | targetAccount [%s] | movementChange [%s] " ,
-					sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency()));
+			logger.info("sourceAccount: {} | targetAccount: {} | movementChange: {} " ,
+					sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency());
 			
 			if (!sourceAccount.getCurrency().equals(targetAccount.getCurrency())) {
 				
@@ -47,11 +47,11 @@ public class CoreExchangeImpl implements CoreExchangeService {
 				if (Constants.MONEDA_SOL.equals(sourceAccount.getCurrency())) {
 					if (!movementChange.getCurrency().equals(sourceAccount.getCurrency())) { // 500 usd
 						
-						logger.info(String.format("Exchange-rate [%s] - Iniciando cálculo..." , Constants.CATEGORIA_VENTA));
+						logger.info("Exchange-rate [{}] - Iniciando cálculo..." , Constants.CATEGORIA_VENTA);
 						montoCalculado = movementChange.getAmount() * tipoCambioDiaVenta; // 2000 sol
 						monedaExchange = sourceAccount.getCurrency();
 						
-						logger.info(String.format("---> MontoCalculadoConversion %s %s", montoCalculado, monedaExchange ));
+						logger.info("---> MontoCalculadoConversion {} {}", montoCalculado, monedaExchange );
 						
 						tipoCambioDia = tipoCambioDiaVenta;
 						categoryExchange = Constants.CATEGORIA_VENTA;
@@ -64,12 +64,12 @@ public class CoreExchangeImpl implements CoreExchangeService {
 					logger.info("Exchange-rate" +  Constants.CATEGORIA_COMPRA);
 
 					if (!movementChange.getCurrency().equals(targetAccount.getCurrency())) { // 400 sol
-						logger.info(String.format("Exchange-rate [%s] - Iniciando cálculo..." , Constants.CATEGORIA_COMPRA));
+						logger.info("Exchange-rate [{}] - Iniciando cálculo..." , Constants.CATEGORIA_COMPRA);
 
 						montoCalculado = movementChange.getAmount() / tipoCambioDiaCompra; // 102.5 usd
 						monedaExchange = sourceAccount.getCurrency();
 						
-						logger.info(String.format("---> MontoCalculadoConversion %s %s", montoCalculado, monedaExchange ));
+						logger.info("---> MontoCalculadoConversion {} {}", montoCalculado, monedaExchange );
 
 						
 						tipoCambioDia = tipoCambioDiaCompra;

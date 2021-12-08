@@ -1,7 +1,5 @@
 package com.apps.ops.util;
 
-import org.springframework.stereotype.Component;
-
 public class Constants {
 
 	private Constants() {

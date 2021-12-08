@@ -36,15 +36,16 @@ public class OperationController {
 
 		if (sourceAccount.isPresent() && targetAccount.isPresent()) {
 
-			String format = String.format("cuentaOrigen [%s]", sourceAccount.get().toString());
-			logger.info(format);
-			format = String.format("cuentaDestino [%s]", targetAccount.get().toString());
-			logger.info(format);
+			String message = sourceAccount.get().toString();
+			logger.info("cuentaOrigen {}", message);
+
+			message = targetAccount.get().toString();
+			logger.info("cuentaDestino {}", message);
 
 			MovementChange movementChange = new MovementChange(operationRequest.getAmountMovement(),
 					operationRequest.getCurrencyMovement());
-			format = String.format("movementChange [%s]", movementChange.toString());
-			logger.info(format);
+			message = movementChange.toString();
+			logger.info("movementChange {}", message);
 			return operationService.transfer(sourceAccount, targetAccount, movementChange);
 		} else {
 			logger.info("Datos no encontrados: " + Constants.VALIDACION_SOLICITUD_INCORRECTA);
