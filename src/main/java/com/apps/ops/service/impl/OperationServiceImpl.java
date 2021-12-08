@@ -36,7 +36,8 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public List<Operation> list() {
 		List<Operation> data= operationRepository.findAll();
-		logger.info(String.format("Ctd Registros obtenidos: %s", data.size()));
+		String format =(String.format("Ctd Registros obtenidos: %s", data.size()));
+		logger.info(format);
 		return data;
 	}
 

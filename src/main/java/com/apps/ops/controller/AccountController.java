@@ -1,6 +1,5 @@
 package com.apps.ops.controller;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,9 @@ import com.apps.ops.service.AccountService;
 import com.apps.ops.util.Constants;
 import com.apps.ops.util.ResponseJson;
 
-
-
 @RestController
 public class AccountController {
-	
+
 	private static final Logger logger = LogManager.getLogger(AccountController.class);
 
 	@Autowired
@@ -28,7 +25,6 @@ public class AccountController {
 
 	@PostMapping("/accounts")
 	public ResponseJson saveAccount(@RequestBody AccountRequest accountRequest) {
-		
 
 		logger.info("---saveAccount---");
 		logger.info(accountRequest);
@@ -38,25 +34,23 @@ public class AccountController {
 		account.setAmount(accountRequest.getAmount());
 		account.setCurrency(accountRequest.getCurrency());
 		account.setStatus(true);
-		
-		accountService.registerAccount(account);
-		return new ResponseJson(Constants.HTTP_OK_STATUS ,Constants.OPERACION_EXITOSA );
-	}
 
-	
+		accountService.registerAccount(account);
+		return new ResponseJson(Constants.HTTP_OK_STATUS, Constants.OPERACION_EXITOSA);
+	}
 
 	@GetMapping("/accounts")
 	public ResponseJson list() {
 		logger.info("---listAccounts---");
-		return new ResponseJson(Constants.HTTP_OK_STATUS ,accountService.list() );
+		return new ResponseJson(Constants.HTTP_OK_STATUS, accountService.list());
 	}
-	
+
 	@GetMapping("/accounts/{id}")
 	public ResponseJson getById(@PathVariable Integer id) {
-		logger.info(String.format("---/accounts/{%s}---", id));
-		return new ResponseJson(Constants.HTTP_OK_STATUS ,accountService.findById(id));
+		String format = String.format("---/accounts/{%s}---", id);
+		logger.info(format);
+		return new ResponseJson(Constants.HTTP_OK_STATUS, accountService.findById(id));
 
 	}
-	
 
 }

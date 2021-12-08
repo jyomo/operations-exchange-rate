@@ -1,5 +1,4 @@
 package com.apps.ops.bean;
-//@Component
 public class AccountRequest {
 	
 	private String accountType;

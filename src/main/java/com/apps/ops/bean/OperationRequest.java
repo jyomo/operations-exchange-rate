@@ -1,6 +1,5 @@
 package com.apps.ops.bean;
 
-//@Component
 public class OperationRequest {
 	private int sourceAccountId;
 	private int targetAccountId;

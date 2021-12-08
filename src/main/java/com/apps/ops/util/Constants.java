@@ -4,6 +4,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Constants {
+
+	private Constants() {
+		throw new IllegalStateException("Clase Utilitaria");
+	}
+
 	public static final String TRANSFERENCIA = "TRANSFERENCIA";
 	public static final String TIPO_CAMBIO = "TIPO_CAMBIO";
 	public static final String MONEDA_SOL = "SOL";

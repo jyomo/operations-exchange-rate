@@ -19,6 +19,7 @@ public class MovementChange {
 	public MovementChange() {
 		super();
 	}
+
 	public MovementChange(double amount, String currency) {
 		super();
 		this.amount = amount;

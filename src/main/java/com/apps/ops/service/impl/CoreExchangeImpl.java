@@ -15,7 +15,7 @@ import com.apps.ops.util.Constants;
 @Service
 public class CoreExchangeImpl implements CoreExchangeService {
 
-	private static final Logger logger = LogManager.getLogger(OperationServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(CoreExchangeImpl.class);
 
 	@Override
 	public CoreExchange getExchangeData(Optional<Account> sourceAccountOptional,

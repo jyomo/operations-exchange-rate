@@ -7,8 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Account
-extends BankAccount 
-{
+		extends BankAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -22,8 +21,6 @@ extends BankAccount
 		super();
 	}
 
-	
-
 	public Account(String accountType, String accountNumber, double ammount, String currency, boolean status) {
 		super();
 		this.accountType = accountType;
@@ -32,8 +29,6 @@ extends BankAccount
 		this.currency = currency;
 		this.status = status;
 	}
-
-
 
 	public int getId() {
 		return id;

@@ -16,7 +16,7 @@ import com.apps.ops.service.AccountService;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-	private static final Logger logger = LogManager.getLogger(AccountController.class);
+	private static final Logger logger = LogManager.getLogger(AccountServiceImpl.class);
 
 	@Autowired
 

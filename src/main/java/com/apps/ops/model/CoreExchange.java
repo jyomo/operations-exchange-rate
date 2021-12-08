@@ -24,7 +24,7 @@ public class CoreExchange {
 		this.montoCalculado = montoCalculado;
 		this.monedaTipoCambio = monedaExchange;
 		this.tipoCambioDia = tipoCambioDia;
-		this.categoriaCambio=categoriaCambio;
+		this.categoriaCambio = categoriaCambio;
 	}
 
 	public double getMontoCalculado() {
@@ -72,9 +72,5 @@ public class CoreExchange {
 		return "CoreExchange [id=" + id + ", montoCalculado=" + montoCalculado + ", monedaTipoCambio="
 				+ monedaTipoCambio + ", tipoCambioDia=" + tipoCambioDia + ", categoriaCambio=" + categoriaCambio + "]";
 	}
-	
-	
-	
-	
 
 }

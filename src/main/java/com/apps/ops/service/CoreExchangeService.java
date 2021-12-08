@@ -8,6 +8,7 @@ import com.apps.ops.model.MovementChange;
 
 public interface CoreExchangeService {
 
-	public CoreExchange getExchangeData(Optional<Account> sourceAccount, Optional<Account> targetAccount, MovementChange movement);
-	
+	public CoreExchange getExchangeData(Optional<Account> sourceAccount, Optional<Account> targetAccount,
+			MovementChange movement);
+
 }

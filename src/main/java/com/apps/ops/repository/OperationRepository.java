@@ -7,12 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.apps.ops.model.Operation;
 
-//@Repository
-//public interface AccountRepository extends CrudRepository<Account, Integer>{
-//	
-//}
-
 @Repository
-public interface OperationRepository extends JpaRepository<Operation, BigDecimal>{
-	
+public interface OperationRepository extends JpaRepository<Operation, BigDecimal> {
+
 }
