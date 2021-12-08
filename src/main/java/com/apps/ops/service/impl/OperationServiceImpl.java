@@ -110,8 +110,10 @@ public class OperationServiceImpl implements OperationService {
 				}
 			} else {
 
-				logger.info(String.format("CASO 3Y4. MonedaOrigen [%s] y MonedaDestino [%s] diferentes", sourceAccount.getCurrency(),
-						targetAccount.getCurrency()));
+				// logger.info(String.format("CASO 3Y4. MonedaOrigen [%s] y MonedaDestino [%s] diferentes", sourceAccount.getCurrency(),
+				// 		targetAccount.getCurrency()));
+
+				logger.info("CASO 3Y4. MonedaOrigen {} y MonedaDestino {} diferentes", sourceAccount.getCurrency(),targetAccount.getCurrency());
 
 			}
 
