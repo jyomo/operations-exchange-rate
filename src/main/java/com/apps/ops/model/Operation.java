@@ -26,19 +26,6 @@ public class Operation {
 		super();
 	}
 
-	public Operation(int sourceAccountId, int targetAccountId, double sourceAmountMovement, double targetAmountMovement,
-			double exchangeRate, String exchangeCurrency, String exchangeCategory, String operationType) {
-		super();
-		this.sourceAccountId = sourceAccountId;
-		this.targetAccountId = targetAccountId;
-		this.sourceAmountMovement = sourceAmountMovement;
-		this.targetAmountMovement = targetAmountMovement;
-		this.exchangeRate = exchangeRate;
-		this.exchangeCurrency = exchangeCurrency;
-		this.exchangeCategory = exchangeCategory;
-		this.operationType = operationType;
-	}
-
 	public BigDecimal getId() {
 		return id;
 	}

@@ -8,6 +8,7 @@ class OperationsExchangeRateApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
