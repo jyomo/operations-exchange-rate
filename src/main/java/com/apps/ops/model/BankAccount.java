@@ -1,7 +1,10 @@
 package com.apps.ops.model;
 
-public abstract class BankAccount {
-	public abstract boolean deposit(double amount);
+public interface BankAccount {
+	
+	public double getBalance();
+	
+	public boolean deposit(double amount);
 
-	public abstract boolean withdraw(double amount);
+	public boolean withdraw(double amount);
 }

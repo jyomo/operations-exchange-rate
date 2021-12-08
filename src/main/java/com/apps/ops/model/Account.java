@@ -6,14 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Account
-		extends BankAccount {
+public class Account implements BankAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	private String accountType;
-	private String accountNumber;
-	private double ammount;
+	private String name;
+	private String code;
+	private double balance;
 	private String currency;
 	private boolean status;
 
@@ -21,11 +20,11 @@ public class Account
 		super();
 	}
 
-	public Account(String accountType, String accountNumber, double ammount, String currency, boolean status) {
+	public Account(String accountType, String accountNumber, double balance, String currency, boolean status) {
 		super();
-		this.accountType = accountType;
-		this.accountNumber = accountNumber;
-		this.ammount = ammount;
+		this.name = accountType;
+		this.code = accountNumber;
+		this.balance = balance;
 		this.currency = currency;
 		this.status = status;
 	}
@@ -38,28 +37,28 @@ public class Account
 		this.id = id;
 	}
 
-	public String getAccountType() {
-		return accountType;
+	public String getName() {
+		return name;
 	}
 
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getCode() {
+		return code;
 	}
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public double getAmount() {
-		return ammount;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setAmount(double mount) {
-		this.ammount = mount;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public String getCurrency() {
@@ -80,23 +79,23 @@ public class Account
 
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", accountType=" + accountType + ", accountNumber=" + accountNumber + ", mount="
-				+ ammount + ", currency=" + currency + ", status=" + status + "]";
+		return "Account [id=" + id + ", name=" + name + ", code=" + code + ", balance="
+				+ balance + ", currency=" + currency + ", status=" + status + "]";
 	}
 
 	@Override
-	public boolean deposit(double amount) {
-		this.ammount += amount;
+	public boolean deposit(double balance) {
+		this.balance += balance;
 		return true;
 
 	}
 
 	@Override
-	public boolean withdraw(double amount) {
-		if (this.ammount < amount) {
+	public boolean withdraw(double balance) {
+		if (this.balance < balance) {
 			return false;
 		} else {
-			this.ammount -= amount;
+			this.balance -= balance;
 			return true;
 		}
 

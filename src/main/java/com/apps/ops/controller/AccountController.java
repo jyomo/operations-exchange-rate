@@ -29,9 +29,9 @@ public class AccountController {
 		logger.info("---saveAccount---");
 		logger.info(accountRequest);
 		Account account = new Account();
-		account.setAccountNumber(accountRequest.getAccountNumber());
-		account.setAccountType(accountRequest.getAccountType());
-		account.setAmount(accountRequest.getAmount());
+		account.setCode(accountRequest.getAccountNumber());
+		account.setName(accountRequest.getAccountType());
+		account.setBalance(accountRequest.getAmount());
 		account.setCurrency(accountRequest.getCurrency());
 		account.setStatus(true);
 
