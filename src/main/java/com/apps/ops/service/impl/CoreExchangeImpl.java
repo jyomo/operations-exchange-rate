@@ -15,93 +15,55 @@ import com.apps.ops.util.Constants;
 @Service
 public class CoreExchangeImpl implements CoreExchangeService {
 
+	private double tipoCambioDiaCompra = 3.998;
+	private double tipoCambioDiaVenta = 4.001;
+
 	private static final Logger logger = LogManager.getLogger(CoreExchangeImpl.class);
+
+	private double calculoTipoCambioCompra(double amountChange) {
+		return amountChange / tipoCambioDiaCompra;
+	}
+
+	private double calculoTipoCambioVenta(double amountChange) {
+		return amountChange * tipoCambioDiaVenta;
+	}
 
 	@Override
 	public CoreExchange getExchangeData(Optional<Account> sourceAccountOptional,
 			Optional<Account> targetAccountOptional, MovementChange movementChange) {
+
 		CoreExchange core = null;
-		double tipoCambioDiaCompra = 3.998;
-		double tipoCambioDiaVenta = 4.001;
-		double tipoCambioDia = 0.0;
-		double montoCalculado = 0.0;
-		String monedaExchange = movementChange.getCurrency();
-		String categoryExchange = "";
-
-		Account sourceAccount;
-		Account targetAccount;
-
 		if (sourceAccountOptional.isPresent() && targetAccountOptional.isPresent()) {
+			Account sourceAccount = sourceAccountOptional.get();
+			Account targetAccount = targetAccountOptional.get();
+			logger.info("sourceAccount: {} | targetAccount: {} | movementChange: {} ", sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency());
 
-			sourceAccount = sourceAccountOptional.get();
-			targetAccount = targetAccountOptional.get();
-	
-			logger.info("sourceAccount: {} | targetAccount: {} | movementChange: {} " ,
-					sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency());
-			
-			if (!sourceAccount.getCurrency().equals(targetAccount.getCurrency())) {
-				
-				
-				
+			if (!sourceAccount.getCurrency().equals(targetAccount.getCurrency())) { // monedas ctas diferentes
+				if (!sourceAccount.getCurrency().equals(movementChange.getCurrency())) { // CASO 1 (VTA) Y CASO 3
+					return obtenerCalculoTipoCambio(sourceAccount, movementChange);
 
-				if (Constants.MONEDA_SOL.equals(sourceAccount.getCurrency())) {
-					if (!movementChange.getCurrency().equals(sourceAccount.getCurrency())) { // 500 usd
-						
-						logger.info("Exchange-rate [{}] - Iniciando cálculo..." , Constants.CATEGORIA_VENTA);
-						montoCalculado = movementChange.getAmount() * tipoCambioDiaVenta; // 2000 sol
-						monedaExchange = sourceAccount.getCurrency();
-						
-						logger.info("---> MontoCalculadoConversion {} {}", montoCalculado, monedaExchange );
-						
-						tipoCambioDia = tipoCambioDiaVenta;
-						categoryExchange = Constants.CATEGORIA_VENTA;
-					} else {
-						logger.info(Constants.VALIDACION_OPERACION_NO_PERMITIDA);
-					}
-
-				} else if (Constants.MONEDA_DOLAR.equals(sourceAccount.getCurrency())) {
-
-					logger.info("Exchange-rate" +  Constants.CATEGORIA_COMPRA);
-
-					if (!movementChange.getCurrency().equals(targetAccount.getCurrency())) { // 400 sol
-						logger.info("Exchange-rate [{}] - Iniciando cálculo..." , Constants.CATEGORIA_COMPRA);
-
-						montoCalculado = movementChange.getAmount() / tipoCambioDiaCompra; // 102.5 usd
-						monedaExchange = sourceAccount.getCurrency();
-						
-						logger.info("---> MontoCalculadoConversion {} {}", montoCalculado, monedaExchange );
-
-						
-						tipoCambioDia = tipoCambioDiaCompra;
-						categoryExchange = Constants.CATEGORIA_COMPRA;
-					} else {
-						logger.info(Constants.VALIDACION_OPERACION_NO_PERMITIDA);
-					}
-				} else {
-					logger.info("sin coincidencias");
-				}
-				
-				
-				if (!movementChange.getCurrency().equals(sourceAccount.getCurrency())) {
-					logger.info("Exchange-rate calculado..");
-					core = new CoreExchange();
-					core.setMonedaTipoCambio(monedaExchange);
-					core.setMontoCalculado(montoCalculado);
-					core.setTipoCambioDia(tipoCambioDia);
-					core.setCategoriaCambio(categoryExchange);
-					
-					
-					
-					
-				} else {
-					logger.warn("Exchange-rate no calculado..");
-				}
-			}
-		} else {
-			logger.info(Constants.VALIDACION_SOLICITUD_INCORRECTA);
-		}
-
+				} else logger.error("Moneda Origen igual a MonedaCambio {}", Constants.VALIDACION_OPERACION_NO_PERMITIDA);
+			} else logger.error("No aplica lógica para ctas de monedas iguales");
+		} else logger.info(Constants.VALIDACION_SOLICITUD_INCORRECTA + "Datos nulos");
 		return core;
+	}
+
+	private CoreExchange obtenerCalculoTipoCambio(Account sourceAccount, MovementChange movementChange) {
+		logger.info("Exchange-rate - Iniciando cálculo.");
+		String monedaExchange = sourceAccount.getCurrency();
+		double montoCalculado = Constants.MONEDA_SOL.equals(movementChange.getCurrency())
+				? this.calculoTipoCambioCompra(movementChange.getAmount())
+				: this.calculoTipoCambioVenta(movementChange.getAmount());
+		double tipoCambioDia = Constants.MONEDA_SOL.equals(movementChange.getCurrency()) ? tipoCambioDiaCompra
+				: tipoCambioDiaVenta;
+		String categoryExchange = Constants.MONEDA_SOL.equals(movementChange.getCurrency()) ? Constants.CATEGORIA_COMPRA
+				: Constants.CATEGORIA_VENTA;
+		// enviar 500 USD desde (S/. 10000) a (6000 USD) ----> //compra usd y monto
+		// calculado: S/. 500 *4 //enviar S/. 400 desde (6000 USD) a (S/. 10000)
+		// ---->vende usd y monto calculado: usd 400 /3.9
+		logger.info("---> MontoCalculadoConversion {} {}", montoCalculado, monedaExchange);
+		logger.info("Categoría {}", Constants.CATEGORIA_VENTA);
+		return new CoreExchange(montoCalculado, monedaExchange, tipoCambioDia, categoryExchange);
 	}
 
 }
