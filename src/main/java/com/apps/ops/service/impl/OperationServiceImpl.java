@@ -35,7 +35,7 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> list() {
-		List<Operation> data= operationRepository.findAll();
+		List<Operation> data = operationRepository.findAll();
 		logger.info("Ctd Registros obtenidos: {}", data.size());
 		return data;
 	}
@@ -64,7 +64,8 @@ public class OperationServiceImpl implements OperationService {
 			if (sourceAccount.getCurrency().equals(targetAccount.getCurrency())) {
 				if (sourceAccount.getCurrency().equals(movementChange.getCurrency())) {
 
-					logger.info("CASO 1. MonedaOrigen [{}] , MonedaDestino [{}] y  monedaTransferencia [{}] son iguales",
+					logger.info(
+							"CASO 1. MonedaOrigen [{}] , MonedaDestino [{}] y  monedaTransferencia [{}] son iguales",
 							sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency());
 
 					boolean withdrawSuccess = sourceAccount.withdraw(movementChange.getAmount());
@@ -99,45 +100,37 @@ public class OperationServiceImpl implements OperationService {
 					}
 
 				} else {
-					logger.info("CASO 2. MonedaOrigen [{}] , MonedaDestino [{}] iguales pero monedaTransferencia [{}] diferente",
+					logger.info(
+							"CASO 2. MonedaOrigen [{}] , MonedaDestino [{}] iguales pero monedaTransferencia [{}] diferente",
 							sourceAccount.getCurrency(), targetAccount.getCurrency(), movementChange.getCurrency());
 					logger.info(Constants.VALIDACION_MONEDA_INCORRECTA);
 
 					return new ResponseJson(Constants.HTTP_BAD_REQUEST_STATUS, Constants.VALIDACION_MONEDA_INCORRECTA);
 				}
 			} else {
-				logger.info("CASO 3Y4. MonedaOrigen {} y MonedaDestino {} diferentes", sourceAccount.getCurrency(),targetAccount.getCurrency());
-			}
+				// monedas ctas diferentes
+				CoreExchange coreExchange = coreExchangeService.getExchangeData(sourceAccountOptional,
+						targetAccountOptional, movementChange);
+				if (coreExchange == null) {
+					return new ResponseJson(Constants.HTTP_BAD_REQUEST_STATUS,
+							Constants.VALIDACION_OPERACION_NO_PERMITIDA);
+				}
 
-			CoreExchange coreExchange = coreExchangeService.getExchangeData(sourceAccountOptional,
-					targetAccountOptional, movementChange);
-			if (coreExchange == null) {
-				return new ResponseJson(Constants.HTTP_BAD_REQUEST_STATUS, Constants.VALIDACION_OPERACION_NO_PERMITIDA);
-			}
+				logger.info("2. obteniendo datos de coreExchange");
+				String dataCoreExchange = coreExchange.toString();
+				logger.info(dataCoreExchange);
+				Operation operation = null;
+				operation = new Operation();
+				operation.setSourceAccountId(sourceAccount.getId());
+				operation.setTargetAccountId(targetAccount.getId());
+				operation.setExchangeRate(coreExchange.getTipoCambioDia());
+				operation.setExchangeCategory(coreExchange.getCategoriaCambio());
+				operation.setExchangeCurrency(coreExchange.getMonedaTipoCambio());
+				operation.setSourceAmountMovement(coreExchange.getMontoCalculado());
+				operation.setTargetAmountMovement(movementChange.getAmount());
+				operation.setOperationType(Constants.TIPO_CAMBIO);
+				operation.setOperationType(operation.getOperationType());
 
-			logger.info("2. obteniendo datos de coreExchange");
-
-			String dataCoreExchange=coreExchange.toString();
-			logger.info(dataCoreExchange);
-
-
-			Operation operation = null;
-
-			operation = new Operation();
-
-			operation.setSourceAccountId(sourceAccount.getId());
-			operation.setTargetAccountId(targetAccount.getId());
-
-			operation.setExchangeRate(coreExchange.getTipoCambioDia());
-			operation.setExchangeCategory(coreExchange.getCategoriaCambio());
-			operation.setExchangeCurrency(coreExchange.getMonedaTipoCambio());
-			operation.setSourceAmountMovement(coreExchange.getMontoCalculado());
-			operation.setTargetAmountMovement(movementChange.getAmount());
-
-			operation.setOperationType(Constants.TIPO_CAMBIO);
-			operation.setOperationType(operation.getOperationType());
-
-			if (targetAccount.getCurrency().equals(movementChange.getCurrency())) {
 				boolean withdrawSuccess = sourceAccount.withdraw(coreExchange.getMontoCalculado());
 				boolean depositSuccess = targetAccount.deposit(movementChange.getAmount());
 
@@ -145,28 +138,20 @@ public class OperationServiceImpl implements OperationService {
 					logger.info(Constants.VALIDACION_BALANCE_EXITOSO);
 					accountRepository.save(sourceAccount);
 					logger.info("Cuenta actualizada correctamente.");
-
 					logger.info("Registrando operación...");
-
-					String dataOperation=operation.toString();
+					String dataOperation = operation.toString();
 					logger.info(dataOperation);
-
 					operationRepository.save(operation);
 					logger.info(Constants.OPERACION_EXITOSA);
-
-
 					return new ResponseJson(Constants.HTTP_OK_STATUS,
 							new OperationResponse(sourceAccount.getCurrency(), targetAccount.getCurrency(),
 									coreExchange.getMontoCalculado(), coreExchange.getTipoCambioDia()));
 				} else {
 					logger.info(Constants.VALIDACION_SALDO_NO_DISPONIBLE);
-					return new ResponseJson(Constants.HTTP_NOT_FOUND_STATUS, Constants.VALIDACION_SALDO_NO_DISPONIBLE);
+					return new ResponseJson(Constants.HTTP_NOT_FOUND_STATUS,
+							Constants.VALIDACION_SALDO_NO_DISPONIBLE);
 				}
-			} else {
-				logger.info(Constants.VALIDACION_OPERACION_NO_PERMITIDA);
-				return new ResponseJson(Constants.HTTP_BAD_REQUEST_STATUS, Constants.VALIDACION_OPERACION_NO_PERMITIDA);
-				//sourceAccount = withdraw(movementChange.getAmount())
-				//sourceAccount = deposit(coreExchange.getMontoCalculado())
+
 			}
 
 		} else {
