@@ -1,5 +1,6 @@
 package com.apps.ops.service.impl;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,8 @@ import com.apps.ops.service.LeerDatosService;
 
 @Service
 public class LeerDatosServiceImpl implements LeerDatosService {
-	
+	private static final Logger logger = LogManager.getLogger(LeerDatosServiceImpl.class);
+
 	@Autowired
 	private LeerJson leerJson;
 
@@ -16,9 +18,8 @@ public class LeerDatosServiceImpl implements LeerDatosService {
 	@Override
 	public double leerTipoCambioVenta() {
 		
-		// TODO Auto-generated method stub
 		double data=leerJson.leerData();
-		System.out.println("DATA PROVEEDOR"+ data);
+		logger.info("---->DATA PROVEEDOR: {}", data);
 		return data;
 	}
 

@@ -17,8 +17,8 @@ import com.apps.ops.util.Constants;
 @Service
 public class CoreExchangeImpl implements CoreExchangeService {
 
-//	private double tipoCambioDiaCompra = 3.998;
-//	private double tipoCambioDiaVenta = 4.001;
+//	private double tipoCambioDiaCompra = 3.998
+//	private double tipoCambioDiaVenta = 4.001
 	
 
 	@Autowired
